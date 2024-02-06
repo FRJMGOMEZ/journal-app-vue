@@ -1,21 +1,38 @@
 <template>
-    <div class="entry-container mb-3 pointer p-2" @click="$router.push({name:'entry',params:{id:10}})">
+    <div class="entry-container mb-3 pointer p-2" @click="$router.push({ name: 'entry', params: { id: entry.id } })">
         <div class="entry-title d-flex">
-            <span class="text-success fs-5 fw-bold">15</span>
-            <span class="mx-1 fs-5">Julio</span>
-            <span class="mx-2 fw-light">2024, jueves</span>
+            <span class="text-success fs-5 fw-bold">{{ dayParsed.date }}</span>
+            <span class="mx-1 fs-5">{{ dayParsed.month }}</span>
+            <span class="mx-2 fw-light">{{ dayParsed.year }}, {{ dayParsed.day }}</span>
         </div>
         <div class="entry-description">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae cupiditate, aliquid corrupti tenetur tempore
-            molestias molestiae facilis commodi ut. Similique earum ullam debitis labore, architecto quo hic accusantium
-            quibusdam illo.
+            {{ shortText }}
         </div>
     </div>
 </template>
 
 <script>
+
+import getDayMonthYear from '../helpers/getDayMonthYear';
+
 export default {
-    name: 'EntryComponent'
+    name: 'EntryComponent',
+    props: {
+        entry: {
+            type: Object,
+            required: true
+        }
+    },
+    computed: {
+        shortText() {
+            return this.entry.text.length > 130 ? this.entry.text.substring(0, 130) + '...' : this.entry.text
+        },
+        dayParsed() { return getDayMonthYear(this.entry.date) }
+    },
+    created() {
+
+    }
+
 }
 </script>
 
@@ -33,12 +50,9 @@ export default {
         transition: 0.2s all ease-in;
     }
 
-    .entry-description{
-     font-size: 12px;
+    .entry-description {
+        font-size: 12px;
     }
 
 }
-
-
-
 </style>
