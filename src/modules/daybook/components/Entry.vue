@@ -29,9 +29,7 @@ export default {
         },
         dayParsed() { return getDayMonthYear(this.entry.date) }
     },
-    created() {
-
-    }
+    created() {}
 
 }
 </script>

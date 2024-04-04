@@ -1,7 +1,6 @@
 
 
 export const getEntriesByTerm = ( state ) => (term = '') => {
-    console.log({term}, state.entries)
    return state.entries.filter(entry => entry.text.toLowerCase().includes(term.toLocaleLowerCase()));
 }
 
