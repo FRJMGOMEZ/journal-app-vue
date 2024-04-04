@@ -48,6 +48,10 @@ export default {
         transition: 0.2s all ease-in;
     }
 
+    .entry-title {
+        margin: 10px;
+    }
+
     .entry-description {
         font-size: 12px;
     }

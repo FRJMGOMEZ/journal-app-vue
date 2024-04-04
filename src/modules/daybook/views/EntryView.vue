@@ -7,7 +7,7 @@
         <span class="mx-2 fs-4 fw-light">{{ entryDate.year }}</span>
       </div>
       <div>
-        <button class="btn btn-danger mx-2 m-1">
+        <button v-if="entry.id" @click="removeEntry" class="btn btn-danger mx-2 m-1">
           Borrar
           <i class="fa fa-trash-alt"></i>
         </button>
@@ -21,7 +21,7 @@
     <div class="d-flex flex-column px-3 h-75">
       <textarea placeholder="¿Qué sucedió hoy?" v-model="entry.text"></textarea>
     </div>
-    <Fab :icon="'fa-save'" />
+    <Fab :icon="'fa-save'" @on:click="saveEntry" />
     <img
       src="https://buffy.mlpforums.com/monthly_10_2013/post-18536-0-17144400-1381282031.jpg"
       alt="entry-picture"
@@ -32,7 +32,7 @@
 
 <script>
 import { defineAsyncComponent } from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import getDayMonthYear from "../helpers/getDayMonthYear";
 export default {
   props: {
@@ -51,9 +51,19 @@ export default {
     };
   },
   methods: {
+    ...mapActions('journal',['updateEntry','createEntry','deleteEntry']),
     loadEntryById() {
-      const entry = this.getEntryById(this.id);
+      let entry;
+      if(this.id === 'new'){
+               entry = {
+                text:'',
+                date: new Date().getTime()
+               }
+      }else{
+      entry = this.getEntryById(this.id);
       if (!entry) return this.$router.push({ name: "no-entry" });
+      }
+
       this.entry = entry;
       this.setParsedDay();
     },
@@ -61,6 +71,18 @@ export default {
       const { date, month, year } = getDayMonthYear(this.entry.date);
       this.entryDate = { date, month, year };
     },
+    async saveEntry(){
+      if(this.entry.id){
+       await this.updateEntry( this.entry);
+      }else{
+        const {id} = await this.createEntry(this.entry);
+        this.$router.push({ name: "entry",params:{id} });
+      }
+    },
+    async removeEntry(){
+      await this.deleteEntry(this.entry.id);
+      this.$router.push({ name: "no-entry" });
+    }
   },
   computed: {
     ...mapGetters("journal", ["getEntryById"]),
@@ -92,5 +114,10 @@ img {
   bottom: 100px;
   right: 20px;
   box-shadow: 0px 5px 10px rgba($color: #000000, $alpha: 0.2);
+}
+
+.entry-title {
+  margin:10px;
+  margin-left:30px
 }
 </style>
