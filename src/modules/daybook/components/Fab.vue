@@ -10,8 +10,7 @@ export default {
   props:{
     icon:{
         type:String,
-        default:'fa-plus',
-        required:true
+        default:'fa-plus'
     }
   },
   computed:{

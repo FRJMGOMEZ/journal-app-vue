@@ -1,7 +1,6 @@
 import cloudinaryApi from "@/api/cloudinaryApi";
 
 const uploadImage = async (file) => {
-    console.log({file})
     if(!file) return;
     try{
         const formData = new FormData()

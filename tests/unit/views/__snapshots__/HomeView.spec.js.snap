@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomeView component debe de hacer match con snapshot 1`] = `
+<div class="home"><img alt="Vue logo" src="">
+  <h1>Hola mundo</h1><button class="btn btn-primary"> Daybook</button><button class="btn btn-secondary"> segundo</button><button class="btn btn-warning">tercero</button>
+</div>
+`;

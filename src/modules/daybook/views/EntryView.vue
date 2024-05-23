@@ -56,6 +56,7 @@ import Swal from "sweetalert2";
 import uploadImage from "@/modules/daybook/helpers/uploadImage";
 
 export default {
+  name: "EntryView",
   props: {
     id: {
       type: String,
@@ -101,17 +102,22 @@ export default {
       });
       Swal.showLoading();
 
-      const picture = await uploadImage(this.file);
-      this.entry.picture = picture;
+      if (this.file) {
+        const picture = await uploadImage(this.file);
+        this.entry.picture = picture;
+      }
+
       this.file = null;
       this.localImage = null;
 
+      let entryId = this.entry.id;
       if (this.entry.id) {
         await this.updateEntry(this.entry);
       } else {
         const { id } = await this.createEntry(this.entry);
-        this.$router.push({ name: "entry", params: { id } });
+        entryId = id;
       }
+      this.$router.push({ name: "entry", params: { id:entryId } });
       Swal.fire("Guardado", "Entrada registrada con éxito.");
     },
     async removeEntry() {
@@ -149,7 +155,6 @@ export default {
   },
   created() {
     this.loadEntryById();
-    console.log('loading entry')
   },
   watch: {
     id() {
